@@ -1,56 +1,61 @@
-var garden,gardenImg
-var cat,catImg
-var mouse,mouseImg
-var mouseTeasing
-
-
+var canvas,bg;
+var together;
+var tom, tomImg1,tomImg2;
+var jerry, jerryImg1,jerryImg2;
 
 function preload() {
-           gardenImg=loadImage("garden.png");
-           catImg=loadAnimation("cat1.png","cat2.png","cat3.png")
-           mouseImg=loadAnimation("mouse1.png","mouse2.png","mouse3.png")
+    bg = loadImage("garden.png"); 
+    tomImg1= loadAnimation("cat1.png"); 
+    tomImg2=loadAnimation("cat2.png","cat3.png");
+    tomImg3= loadAnimation("cat4.png"); 
+    jerryImg1=loadAnimation("mouse1.png");
+    jerryImg2= loadAnimation("mouse2.png","mouse3.png"); 
+    jerryImg3=loadAnimation("mouse4.png");
+
 }
 
 function setup(){
-           createCanvas(800,600);
-           
-           garden=addImage(gardenImg)
-           garden=createSprite(800,600)        
+    canvas = createCanvas(1000,800);
 
-           mouse=createSprite(200,200,50,50)
-           mouse=addImage(mouseImg)
+    tom = createSprite(870, 600);
+    tom.addAnimation("tomSleeping", tomImg1);
+    tom.scale = 0.2;
 
-           cat=createSprite(100,200,50,50)
-           cat=addImage(catImg)                                                           
+    jerry = createSprite(200, 600);
+    jerry.addAnimation("jerryStanding", jerryImg1);
+    jerry.scale = 0.15;
 
 }
 
 function draw() {
 
-    background(255);
+    background(bg);
 
-   
-    //Write condition here to evalute if tom and jerry collide
-if(cat.x-mouse.x<(cat.width-mouse.width/2)){
+    if(tom.x - jerry.x < (tom.width - jerry.width)/2)
+    { 
+        tom.velocityX=0;
+        tom.addAnimation("tomLastImage", tomImg3);
+        tom.x =300;
+        tom.scale=0.2;
+        tom.changeAnimation("tomLastImage");
+        jerry.addAnimation("jerryLastImage", jerryImg3);
+        jerry.scale=0.15;
+        jerry.changeAnimation("jerryLastImage");
+    }  
 
-
-}
-        drawSprites();
+    drawSprites();
 }
 
 
 function keyPressed(){
 
-
-  if(keyCode===LEFT_ARROW){
-    mouse.addAnimation("mouseTeasing,mouseimg2");
-    mouse.changeAnimaton("mouseTeasing");
-    mouse.framedelay=25
-  }
-  if (keyCode===RIGHT_ARROW){
-    cat.addAnimation("catImg")
-    cat.changeAnimaton("catImg")
-    cat.framedelay=25
-  }  
-
-  
+    if(keyCode === LEFT_ARROW){
+        tom.velocityX = -5; 
+        tom.addAnimation("tomRunning", tomImg2);
+        tom.changeAnimation("tomRunning");
+        
+        jerry.addAnimation("jerryTeasing", jerryImg2);
+        jerry.frameDelay = 25;
+        jerry.changeAnimation("jerryTeasing");
+    }
+}
